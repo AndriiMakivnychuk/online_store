@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:16
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres 
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=postgres
+    ports:
+      - 5434:5432
+    networks:
+      - my-network
+    # volumes:
+    #   - ~/pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin
+    restart: unless-stopped
+    image: dpage/pgadmin4
+    ports:
+      - 8080:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: your@email.com
+      PGADMIN_DEFAULT_PASSWORD: 1234
+    networks:
+      - my-network
+    depends_on:
+      - postgres
+
+  api:
+    container_name: api
+    restart: unless-stopped
+    image: api:1.0
+    build:
+      context: server
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    networks:
+      - my-network
+    links:
+      - postgres
+    depends_on:
+      - postgres
+
+  client:
+    container_name: client
+    restart: unless-stopped
+    image: client:1.0
+    build:
+      context: client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - my-network
+    depends_on:
+      - api
+
+
+    
+networks:
+  my-network:

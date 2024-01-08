@@ -1,0 +1,172 @@
+swagger: "2.0"
+info:
+  title: Online Store API
+  description: API for managing products, brands, types, and user authentication in an online store.
+  version: "1.0.0"
+
+host: localhost:5000
+schemes:
+  - http
+
+basePath: /api
+
+paths:
+  /brand:
+    get:
+      summary: Get a list of all brands
+      responses:
+        '200':
+          description: Successfully retrieved the list of brands
+        '500':
+          description: Server error
+    post:
+      summary: Create a new brand
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Brand successfully created
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+
+  /device:
+    get:
+      summary: Get a list of all devices
+      responses:
+        '200':
+          description: Successfully retrieved the list of devices
+        '500':
+          description: Server error
+    post:
+      summary: Create a new device
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - price
+                - brandId
+                - typeId
+                - info
+              properties:
+                name:
+                  type: string
+                price:
+                  type: number
+                brandId:
+                  type: integer
+                typeId:
+                  type: integer
+                info:
+                  type: string
+      responses:
+        '200':
+          description: Device successfully created
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+
+  /type:
+    get:
+      summary: Get a list of all types
+      responses:
+        '200':
+          description: Successfully retrieved the list of types
+        '500':
+          description: Server error
+    post:
+      summary: Create a new type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+      responses:
+        '200':
+          description: Type successfully created
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+
+  /user/registration:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User successfully registered
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+
+  /user/login:
+    post:
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: User successfully logged in
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+
+  /user/auth:
+    get:
+      summary: Check user authentication
+      responses:
+        '200':
+          description: User is authenticated
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server error

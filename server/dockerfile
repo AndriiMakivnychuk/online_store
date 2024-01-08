@@ -1,0 +1,17 @@
+FROM node:slim AS production
+
+WORKDIR /usr/src/api
+
+COPY package.json .
+COPY package-lock.json .
+
+RUN npm install
+
+COPY . .
+
+RUN apt-get update -y
+RUN apt-get install -y openssl
+
+EXPOSE 5000
+
+CMD npm run dev
